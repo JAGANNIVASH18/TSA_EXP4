@@ -31,108 +31,60 @@ from statsmodels.tsa.arima_process import ArmaProcess
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import warnings
 
-# Suppress warnings
 warnings.filterwarnings('ignore')
 
-# Step 1: Load dataset
-file_path = 'Sunspots.csv'
-data = pd.read_csv(file_path)
-
-# Step 2: Inspect dataset
-print("Column names in dataset:", data.columns)
+data = pd.read_csv("Sunspots.csv")
+print("Columns in dataset:", data.columns)
 print(data.head())
 
-# Step 3: Extract the sunspot numbers
 sunspots = data['Monthly Mean Total Sunspot Number'].dropna()
 
-# Step 4: Plot the sunspot time series
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(10,5))
 plt.plot(sunspots, label='Sunspots Data')
 plt.title('Sunspot Time Series')
-plt.xlabel('Time Index')
-plt.ylabel('Monthly Mean Sunspot Number')
-plt.legend()
-plt.grid()
-plt.show()
+plt.xlabel('Time Index'); plt.ylabel('Monthly Mean Sunspot Number')
+plt.legend(); plt.grid(); plt.show()
 
-# Step 5: ACF and PACF of actual data
-plt.figure(figsize=(10,6))
-plt.subplot(2,1,1)
-plot_acf(sunspots, lags=30, ax=plt.gca())
-plt.title('ACF of Sunspots')
-plt.xlabel('Lag')
-plt.ylabel('Autocorrelation')
+fig, ax = plt.subplots(2, 1, figsize=(8,6))
+plot_acf(sunspots, lags=30, ax=ax[0])
+ax[0].set_title('ACF of Sunspots')
+plot_pacf(sunspots, lags=30, ax=ax[1])
+ax[1].set_title('PACF of Sunspots')
+plt.tight_layout(); plt.show()
 
-plt.subplot(2,1,2)
-plot_pacf(sunspots, lags=30, ax=plt.gca())
-plt.title('PACF of Sunspots')
-plt.xlabel('Lag')
-plt.ylabel('Partial Autocorrelation')
-
-plt.tight_layout()
-plt.show()
-
-# Step 6: Simulate ARMA(1,1)
 ar1 = np.array([1, -0.5])
 ma1 = np.array([1, 0.5])
-ARMA_1 = ArmaProcess(ar1, ma1).generate_sample(nsample=len(sunspots))
+arma1 = ArmaProcess(ar1, ma1).generate_sample(nsample=len(sunspots))
 
-plt.figure(figsize=(12,6))
-plt.plot(ARMA_1, label='Simulated ARMA(1,1)')
+plt.figure(figsize=(10,5))
+plt.plot(arma1, label='Simulated ARMA(1,1)')
 plt.title('Simulated ARMA(1,1) Process')
-plt.xlabel('Time Index')
-plt.ylabel('Simulated Value')
-plt.legend()
-plt.grid()
-plt.show()
+plt.xlabel('Time Index'); plt.ylabel('Simulated Value')
+plt.legend(); plt.grid(); plt.show()
 
-# ACF/PACF of ARMA(1,1)
-plt.figure(figsize=(10,6))
-plt.subplot(2,1,1)
-plot_acf(ARMA_1, lags=20, ax=plt.gca())
-plt.title('ACF of ARMA(1,1)')
-plt.xlabel('Lag')
-plt.ylabel('Autocorrelation')
+fig, ax = plt.subplots(2, 1, figsize=(8,6))
+plot_acf(arma1, lags=20, ax=ax[0])
+ax[0].set_title('ACF of ARMA(1,1)')
+plot_pacf(arma1, lags=20, ax=ax[1])
+ax[1].set_title('PACF of ARMA(1,1)')
+plt.tight_layout(); plt.show()
 
-plt.subplot(2,1,2)
-plot_pacf(ARMA_1, lags=20, ax=plt.gca())
-plt.title('PACF of ARMA(1,1)')
-plt.xlabel('Lag')
-plt.ylabel('Partial Autocorrelation')
-
-plt.tight_layout()
-plt.show()
-
-# Step 7: Simulate ARMA(2,2)
 ar2 = np.array([1, -0.33, 0.5])
 ma2 = np.array([1, 0.9, 0.3])
-ARMA_2 = ArmaProcess(ar2, ma2).generate_sample(nsample=len(sunspots))
+arma2 = ArmaProcess(ar2, ma2).generate_sample(nsample=len(sunspots))
 
-plt.figure(figsize=(12,6))
-plt.plot(ARMA_2, label='Simulated ARMA(2,2)', color='orange')
+plt.figure(figsize=(10,5))
+plt.plot(arma2, label='Simulated ARMA(2,2)', color='orange')
 plt.title('Simulated ARMA(2,2) Process')
-plt.xlabel('Time Index')
-plt.ylabel('Simulated Value')
-plt.legend()
-plt.grid()
-plt.show()
+plt.xlabel('Time Index'); plt.ylabel('Simulated Value')
+plt.legend(); plt.grid(); plt.show()
 
-# ACF/PACF of ARMA(2,2)
-plt.figure(figsize=(10,6))
-plt.subplot(2,1,1)
-plot_acf(ARMA_2, lags=20, ax=plt.gca())
-plt.title('ACF of ARMA(2,2)')
-plt.xlabel('Lag')
-plt.ylabel('Autocorrelation')
-
-plt.subplot(2,1,2)
-plot_pacf(ARMA_2, lags=20, ax=plt.gca())
-plt.title('PACF of ARMA(2,2)')
-plt.xlabel('Lag')
-plt.ylabel('Partial Autocorrelation')
-
-plt.tight_layout()
-plt.show()
+fig, ax = plt.subplots(2, 1, figsize=(8,6))
+plot_acf(arma2, lags=20, ax=ax[0])
+ax[0].set_title('ACF of ARMA(2,2)')
+plot_pacf(arma2, lags=20, ax=ax[1])
+ax[1].set_title('PACF of ARMA(2,2)')
+plt.tight_layout(); plt.show()
 ```
 
 OUTPUT:
